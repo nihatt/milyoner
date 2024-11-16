@@ -1,0 +1,163 @@
+[
+    {
+        "index": 1,
+        "question": "Aşağıdaki seçeneklerden hangisi bir yazılım dilidir?",
+        "options": [
+            {
+                "text": "Bird",
+                "isCorrect": false
+            },
+            {
+                "text": "OS",
+                "isCorrect": false
+            },
+            {
+                "text": "iOS",
+                "isCorrect": false
+            },
+            {
+                "text": "Python",
+                "isCorrect": true
+            }
+        ],
+        "isShown": false
+    },
+    {
+        "index": 2,
+        "question": "Bir mağazanın vitrinindeki 'Patron Çıldırdı!' ifadesi muhtemelen hangisini anlatmak istiyordur?",
+        "options": [
+            {
+                "text": "İşyerine nazar değdiğini",
+                "isCorrect": false
+            },
+            {
+                "text": "Faturaların yüksek geldiğini",
+                "isCorrect": false
+            },
+            {
+                "text": "İndirim olduğunu",
+                "isCorrect": true
+            },
+            {
+                "text": "Patronun tatile çıktığını",
+                "isCorrect": false
+            }
+        ],
+        "isShown": false
+    },
+    {
+        "index": 3,
+        "question": "Halk arasında kişinin destekçisi, özellikle aile büyükleri için kullanılan ve çoğunlukla 'koca' sıfatıyla anılan ağaç türü hangisidir?",
+        "options": [
+            {
+                "text": "Servi",
+                "isCorrect": false
+            },
+            {
+                "text": "Kayın",
+                "isCorrect": false
+            },
+            {
+                "text": "Meşe",
+                "isCorrect": false
+            },
+            {
+                "text": "Çınar",
+                "isCorrect": true
+            }
+        ],
+        "isShown": false
+    },
+    {
+        "index": 4,
+        "question": "Dokunmatik ekranlarda görüntüyü büyütmek için ekrana koyulup birbirinden uzaklaştırılan iki parmak genellikle hangileri olur?",
+        "options": [
+            {
+                "text": "İşaret parmağı ve orta parmak",
+                "isCorrect": false
+            },
+            {
+                "text": "Orta parmak ve yüzük parmağı",
+                "isCorrect": false
+            },
+            {
+                "text": "Başparmak ve işaret parmağı",
+                "isCorrect": true
+            },
+            {
+                "text": "Yüzük parmağı ve serçe parmak",
+                "isCorrect": false
+            }
+        ],
+        "isShown": false
+    },
+    {
+        "index": 5,
+        "question": "Otomobillerde, lastiklerin takıldığı tekerliğin çember biçimindeki bölümüne ne ad verilir?",
+        "options": [
+            {
+                "text": "Dingil",
+                "isCorrect": false
+            },
+            {
+                "text": "Şasi",
+                "isCorrect": false
+            },
+            {
+                "text": "Jant",
+                "isCorrect": true
+            },
+            {
+                "text": "Kriko",
+                "isCorrect": false
+            }
+        ],
+        "isShown": false
+    },
+    {
+        "index": 122,
+        "question": "Hangi elementin kimyasal sembolü 'O' harfidir?",
+        "options": [
+            {
+                "text": "Oksijen",
+                "isCorrect": true
+            },
+            {
+                "text": "Gümüş",
+                "isCorrect": false
+            },
+            {
+                "text": "Helyum",
+                "isCorrect": false
+            },
+            {
+                "text": "Altın",
+                "isCorrect": false
+            }
+        ],
+        "isShown": false
+    },
+    {
+        "index": 123,
+        "question": "Hangi ülkede kangurular doğal olarak yaşar?",
+        "options": [
+            {
+                "text": "Avustralya",
+                "isCorrect": true
+            },
+            {
+                "text": "Kanada",
+                "isCorrect": false
+            },
+            {
+                "text": "İrlanda",
+                "isCorrect": false
+            },
+            {
+                "text": "İsviçre",
+                "isCorrect": false
+            }
+        ],
+        "isShown": false
+    }
+]

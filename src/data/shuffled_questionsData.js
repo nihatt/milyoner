@@ -1,0 +1,2 @@
+const questionsData = [{"index": 1, "question": "Aşağıdaki seçeneklerden hangisi bir yazılım dilidir?", "options": [{"text": "Python", "isCorrect": True}, {"text": "Bird", "isCorrect": False}, {"text": "iOS", "isCorrect": False}, {"text": "OS", "isCorrect": False}], "isShown": False}, {"index": 118, "question": "Hangi ülkenin İsveç ile sınırı vardır?", "options": [{"text": "Rusya", "isCorrect": False}, {"text": "Almanya", "isCorrect": False}, {"text": "Norveç", "isCorrect": True}, {"text": "Polonya", "isCorrect": False}], "isShown": False}];
+export default questionsData;

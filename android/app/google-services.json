@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "817386738783",
+    "project_id": "milyoner-4d161",
+    "storage_bucket": "milyoner-4d161.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817386738783:android:41fbf0494f630b6d90b7ea",
+        "android_client_info": {
+          "package_name": "com.milyoner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbAihVCP7L54sXw8fsWwYnBrtF69TUWs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

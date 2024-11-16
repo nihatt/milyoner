@@ -1,0 +1,48 @@
+[
+    {
+        "index": 1,
+        "question": "Aşağıdaki seçeneklerden hangisi bir yazılım dilidir?",
+        "options": [
+            {
+                "text": "iOS",
+                "isCorrect": false
+            },
+            {
+                "text": "Bird",
+                "isCorrect": false
+            },
+            {
+                "text": "OS",
+                "isCorrect": false
+            },
+            {
+                "text": "Python",
+                "isCorrect": true
+            }
+        ],
+        "isShown": false
+    },
+    {
+        "index": 118,
+        "question": "Hangi ülkenin İsveç ile sınırı vardır?",
+        "options": [
+            {
+                "text": "Rusya",
+                "isCorrect": false
+            },
+            {
+                "text": "Almanya",
+                "isCorrect": false
+            },
+            {
+                "text": "Polonya",
+                "isCorrect": false
+            },
+            {
+                "text": "Norveç",
+                "isCorrect": true
+            }
+        ],
+        "isShown": false
+    }
+]

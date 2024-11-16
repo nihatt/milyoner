@@ -1,4 +1,8 @@
 {
   "name": "milyoner",
-  "displayName": "milyoner"
+  "displayName": "milyoner",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-9926931663630273~9801211313",
+    "ios_app_id": "ca-app-pub-9926931663630273~6273029845"
+  }
 }
