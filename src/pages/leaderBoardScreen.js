@@ -12,12 +12,15 @@ import {
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from 'react-redux';
 
 const LeaderBoardScreen = ({ navigation }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const state = useSelector(s => s.testflight);
 
   useEffect(() => {
+    console.log("lider",state)
     const fetchData = async () => {
       try {
         const querySnapshot = await firestore()

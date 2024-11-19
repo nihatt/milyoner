@@ -16,18 +16,19 @@ import ShimmerText from '../components/shimmerText';
 import firestore from '@react-native-firebase/firestore';
 // Ekran boyutlarını al
 const { height: screenHeight } = Dimensions.get('window');
-const gameBannerIdIos = __DEV__ ? TestIds.ADAPTIVE_BANNER : (Platform.OS=="ios" ? 'ca-app-pub-9926931663630273/8488129646' : 'ca-app-pub-9926931663630273/7272386361');
-const gameSwipeIdIos = __DEV__ ? TestIds.INTERSTITIAL : (Platform.OS=="ios" ? 'ca-app-pub-9926931663630273/1735491793' : 'ca-app-pub-9926931663630273/1413555020');
-const gameJokerIdIos = __DEV__ ? TestIds.REWARDED :(Platform.OS=="ios" ? 'ca-app-pub-9926931663630273/7704896551' : 'ca-app-pub-9926931663630273/5959304691'); 
-const GameScreen = ({ navigation,route }) => {
+const gameBannerIdIos = __DEV__ ? TestIds.ADAPTIVE_BANNER : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/8488129646' : 'ca-app-pub-9926931663630273/7272386361');
+const gameSwipeIdIos = __DEV__ ? TestIds.INTERSTITIAL : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/1735491793' : 'ca-app-pub-9926931663630273/1413555020');
+const gameJokerIdIos = __DEV__ ? TestIds.REWARDED : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/7704896551' : 'ca-app-pub-9926931663630273/5959304691');
+const GameScreen = ({ navigation, route }) => {
   const bannerRef = useRef(null);
   useForeground(() => {
     Platform.OS === 'ios' && bannerRef.current?.load();
   });
   const id = route?.params?.user
   const dispatch = useDispatch();
-  const bannerLoading = useSelector((state) => state.advertisement.bannerLoading);
-
+  const isIosTestFlight = useSelector(s => s.testflight.testFlightMode);
+  console.log("oyun ekranı =>", isIosTestFlight)
+  const bannerLoading = isIosTestFlight ? false : useSelector((state) => state.advertisement.bannerLoading);
   const interstitial = useRef(
     InterstitialAd.createForAdRequest(gameSwipeIdIos, {
       keywords: ['fashion', 'clothing'],
@@ -45,6 +46,7 @@ const GameScreen = ({ navigation,route }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timerKey, setTimerKey] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState([]);
   const [viewVisible, setViewVisible] = useState(false)
   const [isPaused, setIsPaused] = useState(false); // Süreyi kontrol eden state
   const [questions, setQuestions] = useState([]);
@@ -55,6 +57,7 @@ const GameScreen = ({ navigation,route }) => {
   const [disabledOptions, setDisabledOptions] = useState([]);
   const [secondRight, setSecondRight] = useState(false);
   const [jokerCount, setJokerCount] = useState(3)
+  const [questionData, setQuestionData] = useState([])
   const { isLoaded, isClosed, load, show: showRewarded, isEarnedReward, isShowing, isOpened } = useRewardedAd(gameJokerIdIos);
 
   useEffect(() => {
@@ -88,11 +91,6 @@ const GameScreen = ({ navigation,route }) => {
     }
   }, [isLoaded, load]);
 
-  useEffect(() => {
-    if (isEarnedReward) {
-
-    }
-  }, [isEarnedReward]);
 
   useEffect(() => {
     if (isClosed) {
@@ -100,19 +98,28 @@ const GameScreen = ({ navigation,route }) => {
       setIsPaused(false);
     }
   }, [isClosed]);
+  useEffect(() => {
+    if (questions.length > 0) {
 
-  const applyJokerEffect = async () => {
-
+      const options = questions[currentQuestionIndex]?.options;
+      if (options) {
+        setQuestionData(questions[currentQuestionIndex])
+        setShuffledOptions(shuffle([...options]));
+      }
+    }
+  }, [questions, currentQuestionIndex]);
+  const applyJokerEffect = async (param) => {
+    console.log("gleenzi", param)
     console.log("clicked joker içi", clicked)
-    if (clicked === "%50") {
+    if (clicked === "%50" || param === "%50") {
       await firestore().collection('users').doc(id).update({
         adsWatched: firestore.FieldValue.increment(1),
-        joker50:firestore.FieldValue.increment(1),
+        joker50: firestore.FieldValue.increment(1),
       });
       setJokerCount(jokerCount - 1)
       // Find all incorrect options
       setIsFirstActive(false)
-      const wrongOptions = questions[currentQuestionIndex].options
+      const wrongOptions = shuffledOptions
         .map((option, index) => (!option.isCorrect ? index : null))
         .filter((index) => index !== null);
 
@@ -120,19 +127,19 @@ const GameScreen = ({ navigation,route }) => {
       const optionsToDisable = wrongOptions.sort(() => 0.5 - Math.random()).slice(0, 2);
       setDisabledOptions(optionsToDisable);
     }
-    else if (clicked == "people") {
+    else if (clicked == "people" || param == "people") {
       await firestore().collection('users').doc(id).update({
         adsWatched: firestore.FieldValue.increment(1),
-        jokerPeople:firestore.FieldValue.increment(1),
+        jokerPeople: firestore.FieldValue.increment(1),
       });
       setJokerCount(jokerCount - 1)
       setIsSecondActive(false)
       setViewVisible(true);
     }
-    else if (clicked === "second") {
+    else if (clicked === "second" || param == "second") {
       await firestore().collection('users').doc(id).update({
         adsWatched: firestore.FieldValue.increment(1),
-        jokerSecond:firestore.FieldValue.increment(1),
+        jokerSecond: firestore.FieldValue.increment(1),
       });
       setJokerCount(jokerCount - 1)
       setIsThirdActive(false)
@@ -147,17 +154,14 @@ const GameScreen = ({ navigation,route }) => {
       try {
         const storedIndexes = await AsyncStorage.getItem('shownIndexes');
         const parsedIndexes = storedIndexes ? JSON.parse(storedIndexes) : [];
-
-        // `shownIndexes`'e göre `questionsData`'yi filtrele
         const filteredQuestions = questionsData.filter(
           (question) => !parsedIndexes.includes(question.index)
         );
-
-        // Soruları rastgele sırala ve ilk 12 tanesini al
         const shuffledQuestions = filteredQuestions.sort(() => 0.5 - Math.random());
         const selectedQuestions = shuffledQuestions.slice(0, 12);
 
         setQuestions(selectedQuestions);
+        setQuestionData(selectedQuestions[currentQuestionIndex])
       } catch (error) {
         console.error("AsyncStorage'dan veriler yüklenemedi:", error);
       }
@@ -165,6 +169,8 @@ const GameScreen = ({ navigation,route }) => {
 
     loadShownIndexes();
   }, []);
+  const correctOptionIndex = shuffledOptions?.findIndex(option => option.isCorrect);
+  const optionLabels = ['A', 'B', 'C', 'D'];
 
   const handleCongratulationsPress = async () => {
     try {
@@ -181,7 +187,7 @@ const GameScreen = ({ navigation,route }) => {
 
   const handleOptionPress = async (index) => {
     setSelectedOption(index);
-    const isCorrect = questions[currentQuestionIndex].options[index].isCorrect;
+    const isCorrect = shuffledOptions[index].isCorrect;
 
     if (isCorrect) {
       if (secondRight) {
@@ -209,7 +215,8 @@ const GameScreen = ({ navigation,route }) => {
         } else if (correctAnswerCount + 1 === 2 && loaded) {
           setCorrectAnswerCount(0); // Reset the correct answer count
           setIsPaused(true); // Süreyi durdur
-          interstitial.show(); // Reklamı göster
+          isIosTestFlight ? null : interstitial.show(); // Reklamı göster
+          setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         } else if (currentQuestionIndex < questions.length - 1) {
           setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         } else {
@@ -243,11 +250,19 @@ const GameScreen = ({ navigation,route }) => {
 
   };
 
-  const questionData = questions[currentQuestionIndex];
-  const correctOptionIndex = questionData?.options?.findIndex(option => option.isCorrect);
-  const optionLabels = ['A', 'B', 'C', 'D'];
 
-  const data = questionData?.options?.map((option, index) => ({
+
+
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  const data = shuffledOptions?.map((option, index) => ({
     key: index,
     value: index === correctOptionIndex ? 50 : Math.random() * 20 + 10, // Doğru şık %50, diğerleri rastgele düşük oran
     svg: { fill: index === correctOptionIndex ? '#6A1B9A' : '#cfcfcf' }, // Doğru şık mor, diğerleri gri
@@ -286,7 +301,7 @@ const GameScreen = ({ navigation,route }) => {
           <Text style={styles.settingsButton}>{'='}</Text>
         </View>
       </View>
-      <View style={{ height: screenHeight * 0.40, justifyContent: 'center', alignItems: 'center',marginTop:Platform.OS=="android" ? StatusBar.currentHeight : 0 }}>
+      <View style={{ height: screenHeight * 0.40, justifyContent: 'center', alignItems: 'center', marginTop: Platform.OS == "android" ? StatusBar.currentHeight : 0 }}>
         {questionData && (
           <Question
             count={jokerCount}
@@ -300,17 +315,52 @@ const GameScreen = ({ navigation,route }) => {
           />
         )}
       </View>
-      <View style={[styles.jokerButtonContainer, { height: screenHeight * 0.1,}]}>
-        <MegaButton adReady={loaded} enabled={isFirstActive} icon={"star-half"} text="%50" onPress={() => { setIsPaused(true), setClicked("%50"), showRewarded() }} />
-        <MegaButton adReady={loaded} enabled={isSecondActive} icon={"people-circle"} text="Seyirci" onPress={() => { setIsPaused(true), setClicked("people"), showRewarded() }} />
-        <MegaButton adReady={loaded} enabled={isThirdActive} icon={"repeat"} text="2. Cevap" onPress={() => { setIsPaused(true), setClicked("second"), showRewarded() }} />
-      </View>
-      <View style={[styles.answersContainer, { height: screenHeight * 0.55,alignContent:'flex-start',justifyContent:'flex-start' }]}>
+      <View style={[styles.jokerButtonContainer, { height: screenHeight * 0.1, }]}>
+        <View style={{ flexDirection: 'row' }}>
+          <MegaButton adReady={loaded} enabled={isFirstActive} icon={"star-half"} text="%50"
+            onPress={() => {
+              if (!isIosTestFlight) {
+                setIsPaused(true);
+                setClicked("%50");
+                showRewarded();
+              } else {
+                setClicked("%50");
+                applyJokerEffect("%50")
+              }
+            }}
+          />
+          <MegaButton adReady={loaded} enabled={isSecondActive} icon={"people-circle"} text="Seyirci"
+            onPress={() => {
+              if (!isIosTestFlight) {
+                setIsPaused(true);
+                setClicked("people");
+                showRewarded();
+              } else {
+                setClicked("people");
+                applyJokerEffect("people")
+              }
+            }}
+          />
+          <MegaButton adReady={loaded} enabled={isThirdActive} icon={"repeat"} text="2. Cevap" onPress={() => {
+            if (!isIosTestFlight) {
+              setIsPaused(true);
+              setClicked("second");
+              showRewarded();
+            } else {
+              setClicked("second");
+              applyJokerEffect("second")
+            }
+          }}
+          />
+        </View>
         {secondRight && (
           <ShimmerText>x2 Aktif!</ShimmerText>
         )}
+      </View>
+      <View style={[styles.answersContainer, { height: screenHeight * 0.55, alignContent: 'flex-start', justifyContent: 'flex-start' }]}>
+
         {questionData &&
-          questionData.options.map((option, index) => (
+          shuffledOptions.map((option, index) => (
             <Answer
               key={index}
               text={option.text}
@@ -322,14 +372,14 @@ const GameScreen = ({ navigation,route }) => {
             />
           ))}
       </View>
-      <View style={styles.adContainer}>
+      {!isIosTestFlight && <View style={styles.adContainer}>
         <BannerAd
-          onAdLoaded={() => dispatch(setAdLoading(false))}
+          onAdLoaded={() => isIosTestFlight ? null : dispatch(setAdLoading(false))}
           ref={bannerRef}
           unitId={gameBannerIdIos}
           size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
         />
-      </View>
+      </View>}
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -346,7 +396,7 @@ const GameScreen = ({ navigation,route }) => {
       <Modal visible={isWinModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-          <Ionicons name="trophy" size={50} color="#FF5252" style={styles.icon} />
+            <Ionicons name="trophy" size={50} color="#FF5252" style={styles.icon} />
             <Text style={styles.winText}>Yarışmayı Kazandınız!</Text>
             <Text style={styles.congratulationsText}>Tebrikler! Harika bir başarı gösterdiniz.</Text>
             <TouchableOpacity style={styles.congratulationsButton} onPress={handleCongratulationsPress}>
@@ -359,7 +409,7 @@ const GameScreen = ({ navigation,route }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Seyirci Jokeri</Text>
-            <PieChart style={{ height: 250, width: 250 }} data={data}>
+            <PieChart style={{ height: 250, width: 250 }} data={data ? data : []}>
               <Labels slices={data} />
             </PieChart>
             <TouchableOpacity style={styles.closeButton} onPress={() => setViewVisible(false)}>
@@ -414,9 +464,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   jokerButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   adContainer: {
     height: screenHeight * 0.1,

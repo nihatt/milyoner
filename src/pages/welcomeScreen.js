@@ -8,6 +8,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { PermissionsAndroid } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import LinearGradient from 'react-native-linear-gradient';
+import { setTestFlightMode } from '../redux/reducers/flightReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Ekran boyutlarını al
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
@@ -25,10 +27,21 @@ const WelcomeScreen = ({ navigation }) => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
   const [userId, setUserId] = useState(null);
-  const [bannerLoading, setBannerLoading] = useState(true)
+  const isIosTestFlight = useSelector(s => s.testflight.testFlightMode);
+  const [bannerLoading, setBannerLoading] = useState(isIosTestFlight ? false : true)
   const [id, setId] = useState("")
+  const dispatch = useDispatch()
 
-
+  const fetchAppSettings = async () => {
+    const appSettings = await firestore().collection('appSettings').doc("G5jNwWDYju4j2G0pHyvz").get();
+    if(appSettings.exists){
+      const settings = appSettings.data();
+      dispatch(setTestFlightMode(settings.testFlightMode))
+      console.log(isIosTestFlight)
+    }else{
+      dispatch(setTestFlightMode(true))
+    }
+  }
   const fetchUser = async () => {
     try {
       const storedUser = await AsyncStorage.getItem('user');
@@ -98,6 +111,7 @@ const WelcomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     useCallback(() => {
+      fetchAppSettings();
       fetchUser();
     }, [])
   );
@@ -175,9 +189,11 @@ const WelcomeScreen = ({ navigation }) => {
         <ActivityIndicator size="large" color="#6A1B9A" />
       </View>}
 
-      <View style={styles.bannerContainer}>
-        <BannerAd onAdLoaded={() => setBannerLoading(false)} ref={bannerRef} unitId={welcomeBannerId} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
-      </View>
+      {!isIosTestFlight && (
+        <View style={styles.bannerContainer}>
+          <BannerAd onAdLoaded={() => isIosTestFlight ? null :setBannerLoading(false)} ref={bannerRef} unitId={welcomeBannerId} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
+        </View>
+      )}
 
 
       <Modal visible={userModal} transparent={true} animationType="slide">
