@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:817386738783:android:41fbf0494f630b6d90b7ea",
+        "mobilesdk_app_id": "1:817386738783:android:1c7c2f7aa68b35d490b7ea",
         "android_client_info": {
-          "package_name": "com.milyoner"
+          "package_name": "com.milyonerdbR"
         }
       },
       "oauth_client": [],

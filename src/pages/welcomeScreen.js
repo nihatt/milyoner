@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // Ekran boyutlarını al
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
-const welcomeBannerId = __DEV__ ? TestIds.ADAPTIVE_BANNER : (Platform.OS == 'ios' ? 'ca-app-pub-9926931663630273/8902399901' : 'ca-app-pub-9926931663630273/3981908422');
+const welcomeBannerId = __DEV__ ? TestIds.ADAPTIVE_BANNER : (Platform.OS == 'ios' ? 'ca-app-pub-9926931663630273/8902399901' : 'ca-app-pub-9926931663630273/8728786306');
 const WelcomeScreen = ({ navigation }) => {
   const bannerRef = useRef(null);
   useForeground(() => {

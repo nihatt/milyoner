@@ -2929,14 +2929,14 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNFBApp (21.4.1):
+  - RNFBApp (21.6.0):
     - Firebase/CoreOnly (= 11.5.0)
     - React-Core
-  - RNFBFirestore (21.4.1):
+  - RNFBFirestore (21.6.0):
     - Firebase/Firestore (= 11.5.0)
     - React-Core
     - RNFBApp
-  - RNFBMessaging (21.4.1):
+  - RNFBMessaging (21.6.0):
     - Firebase/Messaging (= 11.5.0)
     - FirebaseCoreExtension
     - React-Core
@@ -2964,7 +2964,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (4.1.0):
+  - RNScreens (4.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2985,9 +2985,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 4.1.0)
+    - RNScreens/common (= 4.3.0)
     - Yoga
-  - RNScreens/common (4.1.0):
+  - RNScreens/common (4.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3414,11 +3414,11 @@ SPEC CHECKSUMS:
   ReactCodegen: 13fc33b956caafe5244ac3e0522aa38426b504ca
   ReactCommon: 08db07e471b7ee1cadfa9e347c8224fd4cefc4b5
   RNCAsyncStorage: ed97da7a45c1af0c6a938c8b66da1ec24792fcab
-  RNFBApp: 7c4cbfa8d93b1b88845df5c243e33975ba1bc963
-  RNFBFirestore: 707fd1b1b68d52f8cb08a668ccfc66347253aa8f
-  RNFBMessaging: 4f0f5d4706dd2c93020352d82f861b69b348c629
+  RNFBApp: f54f97b84af43a870372c6d9915ebe6a61a35bed
+  RNFBFirestore: 5b0800eaa47cf1bd6289276970c1ad0011602b7f
+  RNFBMessaging: 79d87b7e8ec5695f10b6a913f506e8c3059718e0
   RNGoogleMobileAds: 3a009d7c6df01d034f86bd401ffa53db67e11cfe
-  RNScreens: e9cfdcedde2fb10f17f390fb239ee8a2ee7a4fd9
+  RNScreens: 9ec20e849e0df1376c072235ff123f59cdf71287
   RNSVG: feeb4eb546e718d6c6fb70d10fd31e0c5c2d0d90
   RNVectorIcons: 8c7af262a73890caabbac2bb081ddbaa1b8a768c
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748

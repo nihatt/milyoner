@@ -1,4 +1,4 @@
-package com.milyoner
+package com.milyonerdbR
 
 import android.app.Application
 import com.facebook.react.PackageList

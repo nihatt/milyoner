@@ -16,9 +16,9 @@ import ShimmerText from '../components/shimmerText';
 import firestore from '@react-native-firebase/firestore';
 // Ekran boyutlarını al
 const { height: screenHeight } = Dimensions.get('window');
-const gameBannerIdIos = __DEV__ ? TestIds.ADAPTIVE_BANNER : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/8488129646' : 'ca-app-pub-9926931663630273/7272386361');
-const gameSwipeIdIos = __DEV__ ? TestIds.INTERSTITIAL : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/1735491793' : 'ca-app-pub-9926931663630273/1413555020');
-const gameJokerIdIos = __DEV__ ? TestIds.REWARDED : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/7704896551' : 'ca-app-pub-9926931663630273/5959304691');
+const gameBannerIdIos = __DEV__ ? TestIds.ADAPTIVE_BANNER : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/8488129646' : 'ca-app-pub-9926931663630273/7415704637');
+const gameSwipeIdIos = __DEV__ ? TestIds.INTERSTITIAL : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/1735491793' : 'ca-app-pub-9926931663630273/6102622967');
+const gameJokerIdIos = __DEV__ ? TestIds.REWARDED : (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/7704896551' : 'ca-app-pub-9926931663630273/1317028702');
 const GameScreen = ({ navigation, route }) => {
   const bannerRef = useRef(null);
   useForeground(() => {
@@ -58,7 +58,7 @@ const GameScreen = ({ navigation, route }) => {
   const [secondRight, setSecondRight] = useState(false);
   const [jokerCount, setJokerCount] = useState(3)
   const [questionData, setQuestionData] = useState([])
-  const { isLoaded, isClosed, load, show: showRewarded, isEarnedReward, isShowing, isOpened } = useRewardedAd(gameJokerIdIos);
+  const { isLoaded, isClosed, load:loadRewardAds, show: showRewarded, isEarnedReward, isShowing, isOpened } = useRewardedAd(gameJokerIdIos);
 
   useEffect(() => {
     // Load interstitial ad and set up event listeners
@@ -87,9 +87,9 @@ const GameScreen = ({ navigation, route }) => {
     console.log("yüklemeye girdi")
     console
     if (!isLoaded) {
-      load();
+      loadRewardAds();
     }
-  }, [isLoaded, load]);
+  }, [isLoaded, loadRewardAds]);
 
 
   useEffect(() => {
@@ -317,7 +317,7 @@ const GameScreen = ({ navigation, route }) => {
       </View>
       <View style={[styles.jokerButtonContainer, { height: screenHeight * 0.1, }]}>
         <View style={{ flexDirection: 'row' }}>
-          <MegaButton adReady={loaded} enabled={isFirstActive} icon={"star-half"} text="%50"
+          <MegaButton adReady={isLoaded} enabled={isFirstActive} icon={"star-half"} text="%50"
             onPress={() => {
               if (!isIosTestFlight) {
                 setIsPaused(true);
@@ -329,7 +329,7 @@ const GameScreen = ({ navigation, route }) => {
               }
             }}
           />
-          <MegaButton adReady={loaded} enabled={isSecondActive} icon={"people-circle"} text="Seyirci"
+          <MegaButton adReady={isLoaded} enabled={isSecondActive} icon={"people-circle"} text="Seyirci"
             onPress={() => {
               if (!isIosTestFlight) {
                 setIsPaused(true);
@@ -341,7 +341,7 @@ const GameScreen = ({ navigation, route }) => {
               }
             }}
           />
-          <MegaButton adReady={loaded} enabled={isThirdActive} icon={"repeat"} text="2. Cevap" onPress={() => {
+          <MegaButton adReady={isLoaded} enabled={isThirdActive} icon={"repeat"} text="2. Cevap" onPress={() => {
             if (!isIosTestFlight) {
               setIsPaused(true);
               setClicked("second");

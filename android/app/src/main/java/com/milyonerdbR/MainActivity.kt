@@ -1,4 +1,4 @@
-package com.milyoner
+package com.milyonerdbR
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
