@@ -18,7 +18,7 @@ const LeaderBoardScreen = ({ navigation }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const state = useSelector(s => s.testflight);
-
+  const isIosTestFlight = useSelector(s => s.testflight.testFlightMode||false);
   useEffect(() => {
     console.log("lider",state)
     const fetchData = async () => {

@@ -39,7 +39,7 @@ const GameScreen = ({ navigation, route }) => {
     keywords: ['fashion', 'clothing'],
   });
   const [loadedJoker, setLoadedJoker] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(isIosTestFlight);
   const [isWinModalVisible, setIsWinModalVisible] = useState(false);
   const [correctAnswerCount, setCorrectAnswerCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
