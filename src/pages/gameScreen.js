@@ -18,7 +18,7 @@ import firestore from '@react-native-firebase/firestore';
 const { height: screenHeight } = Dimensions.get('window');
 const gameBannerIdIos =  (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/8488129646' : 'ca-app-pub-9926931663630273/7415704637');
 const gameSwipeIdIos = (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/1735491793' : 'ca-app-pub-9926931663630273/6102622967');
-const gameJokerIdIos = (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/7704896551' : 'ca-app-pub-9926931663630273/1317028702');
+const gameJokerIdIos = (Platform.OS == "ios" ? 'ca-app-pub-9926931663630273/9168572335' : 'ca-app-pub-9926931663630273/9073203560');
 const GameScreen = ({ navigation, route }) => {
   const bannerRef = useRef(null);
   useForeground(() => {
