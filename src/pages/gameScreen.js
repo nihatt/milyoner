@@ -26,7 +26,7 @@ const GameScreen = ({ navigation, route }) => {
   });
   const id = route?.params?.user
   const dispatch = useDispatch();
-  const isIosTestFlight = useSelector(s => s.testflight.testFlightMode);
+  const isIosTestFlight =Platform.OS=="ios" ?  useSelector(s => s.testflight.testFlightMode) : false;
   const bannerLoading = isIosTestFlight ? false : useSelector((state) => state.advertisement.bannerLoading);
 
   const interstitial = useRef(

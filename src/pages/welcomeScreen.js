@@ -36,7 +36,7 @@ const WelcomeScreen = ({ navigation }) => {
 
 
 
-  const isIosTestFlight = useSelector((state) => state.testflight.testFlightMode);
+  const isIosTestFlight = Platform.OS=="ios" ? useSelector((state) => state.testflight.testFlightMode) : false;
 
   console.log("ana değer " ,typeof isIosTestFlight)
   useEffect(() => {
